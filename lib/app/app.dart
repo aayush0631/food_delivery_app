@@ -10,6 +10,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:week8/ui/views/food_menu/food_menu_view.dart';
 import 'package:week8/services/theme_service.dart';
 import 'package:week8/services/auth_service.dart';
+import 'package:week8/services/database_service.dart';
 // @stacked-import
 
 @StackedApp(
@@ -27,6 +28,7 @@ import 'package:week8/services/auth_service.dart';
     LazySingleton(classType: ApiService),
     InitializableSingleton(classType: ThemeService),
     InitializableSingleton(classType: AuthService),
+    LazySingleton(classType: DatabaseService),
 // @stacked-service
   ],
   bottomsheets: [

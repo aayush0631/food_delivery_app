@@ -5,6 +5,7 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:week8/services/api_service.dart';
 import 'package:week8/services/theme_service.dart';
 import 'package:week8/services/auth_service.dart';
+import 'package:week8/services/database_service.dart';
 // @stacked-import
 
 import 'test_helpers.mocks.dart';
@@ -18,6 +19,7 @@ import 'test_helpers.mocks.dart';
     MockSpec<ApiService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<ThemeService>(onMissingStub: OnMissingStub.returnDefault),
     MockSpec<AuthService>(onMissingStub: OnMissingStub.returnDefault),
+    MockSpec<DatabaseService>(onMissingStub: OnMissingStub.returnDefault),
 // @stacked-mock-spec
   ],
 )
@@ -28,6 +30,7 @@ void registerServices() {
   getAndRegisterApiServiceService();
   getAndRegisterThemeService();
   getAndRegisterAuthService();
+  getAndRegisterDatabaseService();
 // @stacked-mock-register
 }
 
@@ -105,6 +108,13 @@ MockAuthService getAndRegisterAuthService() {
   _removeRegistrationIfExists<AuthService>();
   final service = MockAuthService();
   locator.registerSingleton<AuthService>(service);
+  return service;
+}
+
+MockDatabaseService getAndRegisterDatabaseService() {
+  _removeRegistrationIfExists<DatabaseService>();
+  final service = MockDatabaseService();
+  locator.registerSingleton<DatabaseService>(service);
   return service;
 }
 // @stacked-mock-create

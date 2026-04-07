@@ -1,22 +1,34 @@
-import 'package:flutter/foundation.dart';
 import 'package:stacked/stacked.dart';
-import '../../../models/meals.dart';
-import '../../../services/api_service.dart';
+import 'package:week8/app/app.locator.dart';
+import 'package:week8/models/meals.dart';
+import 'package:week8/services/api_service.dart';
 
 class FoodMenuViewModel extends BaseViewModel {
-  final ApiService _apiService = ApiService();
+  final ApiService _apiService = locator<ApiService>();
 
   List<Meal> _meals = [];
   List<Meal> get meals => _meals;
 
   bool get hasMeals => _meals.isNotEmpty;
 
-  Future<void> init() async {
-    await fetchMeals();
-  }
+  /// Called from View
+  Future<void> fetchMeals() async {
+    print(" FETCH MEALS CALLED");
 
-  Future fetchMeals() async {
-    _meals = await runBusyFuture(_apiService.getMeals());
+    setBusy(true);
+
+    try {
+      final result = await runBusyFuture(_apiService.getMeals());
+
+      _meals = result;
+
+      print("✅ Meals received: ${_meals.length}");
+    } catch (e) {
+      print("❌ Error fetching meals: $e");
+      _meals = [];
+    }
+
+    setBusy(false);
     notifyListeners();
   }
 }

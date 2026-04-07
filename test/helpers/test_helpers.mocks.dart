@@ -13,6 +13,7 @@ import 'package:stacked_services/stacked_services.dart' as _i2;
 import 'package:week8/models/meals.dart' as _i8;
 import 'package:week8/services/api_service.dart' as _i7;
 import 'package:week8/services/auth_service.dart' as _i10;
+import 'package:week8/services/database_service.dart' as _i11;
 import 'package:week8/services/theme_service.dart' as _i9;
 
 // ignore_for_file: type=lint
@@ -29,6 +30,16 @@ import 'package:week8/services/theme_service.dart' as _i9;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 // ignore_for_file: invalid_use_of_internal_member
+
+class _FakeDuration_0 extends _i1.SmartFake implements Duration {
+  _FakeDuration_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
 
 /// A class which mocks [NavigationService].
 ///
@@ -793,4 +804,103 @@ class MockThemeService extends _i1.Mock implements _i9.ThemeService {
 /// A class which mocks [AuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthService extends _i1.Mock implements _i10.AuthService {}
+class MockAuthService extends _i1.Mock implements _i10.AuthService {
+  @override
+  bool get isLoggedIn => (super.noSuchMethod(
+        Invocation.getter(#isLoggedIn),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+
+  @override
+  Duration get sessionDuration => (super.noSuchMethod(
+        Invocation.getter(#sessionDuration),
+        returnValue: _FakeDuration_0(
+          this,
+          Invocation.getter(#sessionDuration),
+        ),
+        returnValueForMissingStub: _FakeDuration_0(
+          this,
+          Invocation.getter(#sessionDuration),
+        ),
+      ) as Duration);
+
+  @override
+  int get listenersCount => (super.noSuchMethod(
+        Invocation.getter(#listenersCount),
+        returnValue: 0,
+        returnValueForMissingStub: 0,
+      ) as int);
+
+  @override
+  _i5.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> login() => (super.noSuchMethod(
+        Invocation.method(
+          #login,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  _i5.Future<void> logout() => (super.noSuchMethod(
+        Invocation.method(
+          #logout,
+          [],
+        ),
+        returnValue: _i5.Future<void>.value(),
+        returnValueForMissingStub: _i5.Future<void>.value(),
+      ) as _i5.Future<void>);
+
+  @override
+  void listenToReactiveValues(List<dynamic>? reactiveValues) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #listenToReactiveValues,
+          [reactiveValues],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void addListener(void Function()? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(void Function()? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+}
+
+/// A class which mocks [DatabaseService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDatabaseService extends _i1.Mock implements _i11.DatabaseService {}

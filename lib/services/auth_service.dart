@@ -25,7 +25,10 @@ class AuthService
   Future<void> login() async {
     final prefs = await SharedPreferences.getInstance();
     _isLoggedIn = true;
+
     await prefs.setBool(logInKey, true);
+    bool? temp = await prefs.getBool(logInKey);
+    print('you are logged in $temp');
     _startSessionTimer();
     notifyListeners();
   }
@@ -39,9 +42,9 @@ class AuthService
   }
 
   void _startSessionTimer() {
-    _cancelSessionTimer(); 
+    _cancelSessionTimer();
     _sessionTimer = Timer(sessionDuration, () {
-      logout(); // auto logout on timeout
+      logout();
     });
   }
 

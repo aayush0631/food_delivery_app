@@ -10,11 +10,10 @@ class FoodMenuView extends StackedView<FoodMenuViewModel> {
 
   @override
   void onViewModelReady(FoodMenuViewModel viewModel) {
-    viewModel.init();
+    viewModel.fetchMeals();
   }
 
   final _themeService = locator<ThemeService>();
-
   void toggleTheme() {
     _themeService.toggleTheme();
   }

@@ -12,7 +12,6 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final data = response.data;
-
         if (data['meals'] != null) {
           List meals = data['meals'];
 

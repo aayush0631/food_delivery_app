@@ -13,21 +13,13 @@ class FoodMenuViewModel extends BaseViewModel {
 
   /// Called from View
   Future<void> fetchMeals() async {
-    print(" FETCH MEALS CALLED");
-
     setBusy(true);
-
     try {
       final result = await runBusyFuture(_apiService.getMeals());
-
       _meals = result;
-
-      print("✅ Meals received: ${_meals.length}");
     } catch (e) {
-      print("❌ Error fetching meals: $e");
       _meals = [];
     }
-
     setBusy(false);
     notifyListeners();
   }

@@ -27,8 +27,6 @@ class AuthService
     _isLoggedIn = true;
 
     await prefs.setBool(logInKey, true);
-    bool? temp = await prefs.getBool(logInKey);
-    print('you are logged in $temp');
     _startSessionTimer();
     notifyListeners();
   }

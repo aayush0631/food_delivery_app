@@ -7,7 +7,7 @@ import 'package:week8/services/database_service.dart';
 class CartRepository {
   final DatabaseService _db;
 
-  const CartRepository(this._db);
+  CartRepository(this._db);
 
   Future<Results<List<CartItem>>> getCart() async {
     try {

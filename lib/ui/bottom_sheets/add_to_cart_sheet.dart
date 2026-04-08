@@ -19,18 +19,21 @@ class AddToCartSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
+      color: Colors.white,
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text("Add to Cart"),
-          TextField(
+          const Text("Add to Cart"),
+          const SizedBox(height: 20),
+          TextFormField(
             controller: qtyController,
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: "Quantity"),
+            decoration: const InputDecoration(labelText: "Quantity"),
           ),
-          TextField(
+          TextFormField(
             controller: noteController,
-            decoration: InputDecoration(labelText: "Note (optional)"),
+            decoration: const InputDecoration(labelText: "Note (optional)"),
           ),
           const SizedBox(height: 10),
           ElevatedButton(

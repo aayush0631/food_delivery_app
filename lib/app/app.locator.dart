@@ -12,7 +12,6 @@ import 'package:stacked_services/src/dialog/dialog_service.dart';
 import 'package:stacked_services/src/navigation/navigation_service.dart';
 import 'package:stacked_shared/stacked_shared.dart';
 
-import '../repositories/cart_repository.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
 import '../services/database_service.dart';
@@ -40,6 +39,4 @@ Future<void> setupLocator(
   locator.registerSingleton(authService);
 
   locator.registerSingleton(DatabaseService());
-  locator
-      .registerLazySingleton(() => CartRepository(locator<DatabaseService>()));
 }

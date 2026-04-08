@@ -1,4 +1,3 @@
-import 'package:stacked/stacked.dart';
 import 'package:week8/repositories/cart_repository.dart';
 import 'package:week8/services/api_service.dart';
 import 'package:week8/ui/dialogs/info_alert/info_alert_dialog.dart';
@@ -11,13 +10,15 @@ import 'package:week8/ui/views/food_menu/food_menu_view.dart';
 import 'package:week8/services/theme_service.dart';
 import 'package:week8/services/auth_service.dart';
 import 'package:week8/services/database_service.dart';
+import 'package:week8/ui/views/cart/cart_view.dart';
 // @stacked-import
 
 @StackedApp(
   routes: [
     MaterialRoute(page: StartupView),
     MaterialRoute(page: FoodMenuView),
-    MaterialRoute(page: LoginView)
+    MaterialRoute(page: LoginView),
+    MaterialRoute(page: CartView),
 // @stacked-route
   ],
   dependencies: [
@@ -28,7 +29,6 @@ import 'package:week8/services/database_service.dart';
     InitializableSingleton(classType: ThemeService),
     InitializableSingleton(classType: AuthService),
     Singleton(classType: DatabaseService),
-    LazySingleton(classType: CartRepository),
 // @stacked-service
   ],
   bottomsheets: [

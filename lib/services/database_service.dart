@@ -9,7 +9,7 @@ import 'package:week8/models/order_item.dart';
 import 'package:week8/models/user.dart';
 
 class DatabaseService {
-  static const int dbVersion = 1;
+  static const int dbVersion = 2;
   static const String dbName = 'food_delivery_app.db';
   Database? _database;
   // DATABASE GETTER
@@ -34,60 +34,65 @@ class DatabaseService {
   // CREATE TABLES
   Future<void> _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE $DBTables.tableUser(
-        $UserColumns.colUserId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $UserColumns.colUserName TEXT,
-        $UserColumns.colUserPassword TEXT,
-        $UserColumns.colUserEmail TEXT
-      );
-    ''');
+    CREATE TABLE ${DBTables.user}(
+      ${UserColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${UserColumns.name} TEXT,
+      ${UserColumns.password} TEXT,
+      ${UserColumns.email} TEXT
+    );
+  ''');
+
     await db.execute('''
-      CREATE TABLE $DBTables.tableCart(
-        $CartColumns.colCartId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $CartColumns.colCartMealId TEXT,
-        $CartColumns.colCartMealName TEXT,
-        $CartColumns.colCartMealImage TEXT,
-        $CartColumns.colCartPrice REAL,
-        $CartColumns.colCartQuantity INTEGER
-      );
-    ''');
+    CREATE TABLE ${DBTables.cart}(
+      ${CartColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${CartColumns.mealId} TEXT,
+      ${CartColumns.mealName} TEXT,
+      ${CartColumns.mealImage} TEXT,
+      ${CartColumns.price} REAL,
+      ${CartColumns.quantity} INTEGER
+    );
+  ''');
+
     await db.execute('''
-      CREATE TABLE $DBTables.tableOrders(
-        $OrderColumns.colOrderId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $OrderColumns.colOrderUserId INTEGER,
-        $OrderColumns.colOrderTotalAmount REAL,
-        $OrderColumns.colOrderStatus TEXT,
-        $OrderColumns.colOrderCreatedAt TEXT
-      );
-    ''');
+    CREATE TABLE ${DBTables.orders}(
+      ${OrderColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${OrderColumns.userId} INTEGER,
+      ${OrderColumns.totalAmount} REAL,
+      ${OrderColumns.status} TEXT,
+      ${OrderColumns.createdAt} TEXT
+    );
+  ''');
+
     await db.execute('''
-      CREATE TABLE $DBTables.tableOrderItems(
-        $OrderItemColumns.colOrderItemId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $OrderItemColumns.colOrderItemOrderId INTEGER,
-        $OrderItemColumns.colOrderItemMealId TEXT,
-        $OrderItemColumns.colOrderItemMealName TEXT,
-        $OrderItemColumns.colOrderItemMealImage TEXT,
-        $OrderItemColumns.colOrderItemPrice REAL,
-        $OrderItemColumns.colOrderItemQuantity INTEGER
-      );
-    ''');
+    CREATE TABLE ${DBTables.orderItems}(
+      ${OrderItemColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${OrderItemColumns.orderId} INTEGER,
+      ${OrderItemColumns.mealId} TEXT,
+      ${OrderItemColumns.mealName} TEXT,
+      ${OrderItemColumns.mealImage} TEXT,
+      ${OrderItemColumns.price} REAL,
+      ${OrderItemColumns.quantity} INTEGER
+    );
+  ''');
+
     await db.execute('''
-      CREATE TABLE $DBTables.tableFavorites(
-        $FavoriteColumns.colFavId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $FavoriteColumns.colFavMealId TEXT UNIQUE,
-        $FavoriteColumns.colFavMealName TEXT,
-        $FavoriteColumns.colFavMealImage TEXT
-      );
-    ''');
+    CREATE TABLE ${DBTables.favorites}(
+      ${FavoriteColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${FavoriteColumns.mealId} TEXT UNIQUE,
+      ${FavoriteColumns.mealName} TEXT,
+      ${FavoriteColumns.mealImage} TEXT
+    );
+  ''');
+
     await db.execute('''
-      CREATE TABLE $DBTables.tableDelivery(
-        $DeliveryColumns.colDeliveryId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $DeliveryColumns.colDeliveryOrderId INTEGER,
-        $DeliveryColumns.colDeliveryLatitude REAL,
-        $DeliveryColumns.colDeliveryLongitude REAL,
-        $DeliveryColumns.colDeliveryStatus TEXT
-      );
-    ''');
+    CREATE TABLE ${DBTables.delivery}(
+      ${DeliveryColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
+      ${DeliveryColumns.orderId} INTEGER,
+      ${DeliveryColumns.latitude} REAL,
+      ${DeliveryColumns.longitude} REAL,
+      ${DeliveryColumns.status} TEXT
+    );
+  ''');
   }
 
   // get all the cart items

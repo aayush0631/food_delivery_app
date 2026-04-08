@@ -2,6 +2,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:week8/app/app.bottomsheets.dart';
 import 'package:week8/app/app.locator.dart';
+import 'package:week8/app/app.router.dart';
 import 'package:week8/models/add_to_cart.dart';
 import 'package:week8/models/cart.dart';
 import 'package:week8/models/meals.dart';
@@ -13,18 +14,17 @@ class FoodMenuViewModel extends BaseViewModel {
   FoodMenuViewModel(this._cartRepository);
   final BottomSheetService _bottomSheetService = locator<BottomSheetService>();
   final ApiService _apiService = locator<ApiService>();
+  final _navigationService = locator<NavigationService>();
 
   List<Meal> _meals = [];
   List<Meal> get meals => _meals;
 
   bool get hasMeals => _meals.isNotEmpty;
 
-  /// Called from View
   Future<void> fetchMeals() async {
     setBusy(true);
     try {
-      final result = await runBusyFuture(_apiService.getMeals());
-      _meals = result;
+      _meals = await runBusyFuture(_apiService.getMeals());
     } catch (e) {
       _meals = [];
     }
@@ -46,7 +46,7 @@ class FoodMenuViewModel extends BaseViewModel {
         mealName: meal.name,
         quantity: sheetData.quantity,
         mealImage: meal.image,
-        price: 0,
+        price: meal.price,
       );
 
       await addToCart(item);
@@ -57,5 +57,9 @@ class FoodMenuViewModel extends BaseViewModel {
     setBusy(true);
     await runBusyFuture(_cartRepository.addToCart(item));
     setBusy(false);
+  }
+
+  void nav() {
+    _navigationService.navigateToCartView();
   }
 }

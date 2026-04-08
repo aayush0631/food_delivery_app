@@ -1,8 +1,8 @@
 import 'package:stacked/stacked.dart';
+import 'package:week8/repositories/cart_repository.dart';
 import 'package:week8/services/api_service.dart';
-import 'package:week8/ui/bottom_sheets/notice/notice_sheet.dart';
 import 'package:week8/ui/dialogs/info_alert/info_alert_dialog.dart';
-import 'package:week8/ui/views/home/home_view.dart';
+import 'package:week8/ui/bottom_sheets/add_to_cart_sheet.dart';
 import 'package:week8/ui/views/login/login_view.dart';
 import 'package:week8/ui/views/startup/startup_view.dart';
 import 'package:stacked/stacked_annotations.dart';
@@ -15,7 +15,6 @@ import 'package:week8/services/database_service.dart';
 
 @StackedApp(
   routes: [
-    CustomRoute(page: HomeView, transitionsBuilder: TransitionsBuilders.fadeIn),
     MaterialRoute(page: StartupView),
     MaterialRoute(page: FoodMenuView),
     MaterialRoute(page: LoginView)
@@ -28,11 +27,12 @@ import 'package:week8/services/database_service.dart';
     LazySingleton(classType: ApiService),
     InitializableSingleton(classType: ThemeService),
     InitializableSingleton(classType: AuthService),
-    LazySingleton(classType: DatabaseService),
+    Singleton(classType: DatabaseService),
+    LazySingleton(classType: CartRepository),
 // @stacked-service
   ],
   bottomsheets: [
-    StackedBottomsheet(classType: NoticeSheet),
+    StackedBottomsheet(classType: AddToCartSheet),
     // @stacked-bottom-sheet
   ],
   dialogs: [

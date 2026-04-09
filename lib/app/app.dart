@@ -1,4 +1,5 @@
 import 'package:week8/repositories/cart_repository.dart';
+import 'package:week8/repositories/favorite_repository.dart';
 import 'package:week8/services/api_service.dart';
 import 'package:week8/ui/dialogs/info_alert/info_alert_dialog.dart';
 import 'package:week8/ui/bottom_sheets/add_to_cart_sheet.dart';
@@ -11,6 +12,9 @@ import 'package:week8/services/theme_service.dart';
 import 'package:week8/services/auth_service.dart';
 import 'package:week8/services/database_service.dart';
 import 'package:week8/ui/views/cart/cart_view.dart';
+import 'package:week8/ui/views/meal_description/meal_description_view.dart';
+import 'package:week8/ui/views/orders/orders_view.dart';
+import 'package:week8/ui/views/main/main_view.dart';
 // @stacked-import
 
 @StackedApp(
@@ -19,6 +23,9 @@ import 'package:week8/ui/views/cart/cart_view.dart';
     MaterialRoute(page: FoodMenuView),
     MaterialRoute(page: LoginView),
     MaterialRoute(page: CartView),
+    MaterialRoute(page: MealDescriptionView),
+    MaterialRoute(page: OrdersView),
+    MaterialRoute(page: MainView),
 // @stacked-route
   ],
   dependencies: [
@@ -29,6 +36,8 @@ import 'package:week8/ui/views/cart/cart_view.dart';
     InitializableSingleton(classType: ThemeService),
     InitializableSingleton(classType: AuthService),
     Singleton(classType: DatabaseService),
+    LazySingleton(classType: CartRepository),
+    LazySingleton(classType: FavoriteRepository),
 // @stacked-service
   ],
   bottomsheets: [

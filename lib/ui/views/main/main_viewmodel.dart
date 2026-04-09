@@ -1,0 +1,18 @@
+import 'package:flutter/material.dart';
+import 'package:stacked/stacked.dart';
+import 'package:week8/ui/views/food_menu/food_menu_view.dart';
+import 'package:week8/ui/views/orders/orders_view.dart';
+
+class MainViewModel extends BaseViewModel {
+  int currentIndex = 0;
+
+  List<Widget> views = const [
+    FoodMenuView(),
+    OrdersView(),
+  ];
+
+  void setIndex(int index) {
+    currentIndex = index;
+    notifyListeners();
+  }
+}

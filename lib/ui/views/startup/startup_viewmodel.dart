@@ -6,21 +6,20 @@ import 'package:week8/services/auth_service.dart';
 import 'package:week8/services/theme_service.dart';
 
 class StartupViewModel extends ReactiveViewModel {
-  final _navigationService = locator<NavigationService>();
-
   final _themeService = locator<ThemeService>();
   final _loginService = locator<AuthService>();
-
-  bool get isDarkMode => _themeService.isDarkMode;
-  bool get isLoggedIn => _loginService.isLoggedIn;
+  final _navigationService = locator<NavigationService>();
 
   @override
   List<ListenableServiceMixin> get listenableServices =>
       [_themeService, _loginService];
 
+  bool get isDarkMode => _themeService.isDarkMode;
+  bool get isLoggedIn => _loginService.isLoggedIn;
+
   void runStartupLogic() {
     if (isLoggedIn) {
-      _navigationService.replaceWithFoodMenuView();
+      _navigationService.replaceWithMainView();
     } else {
       _navigationService.replaceWithLoginView();
     }

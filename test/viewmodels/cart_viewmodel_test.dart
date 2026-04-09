@@ -4,7 +4,7 @@ import 'package:week8/app/app.locator.dart';
 import '../helpers/test_helpers.dart';
 
 void main() {
-  group('MenuListingViewViewModel Tests -', () {
+  group('CartViewModel Tests -', () {
     setUp(() => registerServices());
     tearDown(() => locator.reset());
   });

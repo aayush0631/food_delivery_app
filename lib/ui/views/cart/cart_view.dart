@@ -43,26 +43,29 @@ class CartView extends StackedView<CartViewModel> {
           itemBuilder: (context, index) {
             final cart = viewModel.cart[index];
 
-            return Card(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Image.network(
-                      cart.mealImage,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+            return GestureDetector(
+              onTap: () => viewModel,
+              child: Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Image.network(
+                        cart.mealImage,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(cart.mealName),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Text('$cart.quantity'),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8),
+                      child: Text(cart.mealName),
+                    ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Text('$cart.quantity'),
+                    ),
+                  ],
+                ),
               ),
             );
           },

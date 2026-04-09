@@ -2,7 +2,7 @@ class Order {
   final int? id;
   final int userId;
   final double totalAmount;
-  final String status; // pending, preparing, delivered
+  final String status;
   final String createdAt;
 
   Order({

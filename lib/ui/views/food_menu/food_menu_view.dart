@@ -11,7 +11,6 @@ class FoodMenuView extends StackedView<FoodMenuViewModel> {
   @override
   void onViewModelReady(FoodMenuViewModel viewModel) {
     viewModel.fetchMeals();
-    viewModel.favoriteMealIds();
   }
 
   @override
@@ -81,6 +80,7 @@ Widget buildGrid(FoodMenuViewModel viewModel) {
 }
 
 GestureDetector buildMealCard(FoodMenuViewModel viewModel, Meal meal) {
+  const bool useSwitcher = true;
   return GestureDetector(
     onTap: () => viewModel.openMealDescription(meal),
     child: Card(
@@ -112,6 +112,15 @@ GestureDetector buildMealCard(FoodMenuViewModel viewModel, Meal meal) {
                   ),
                 ),
                 const SizedBox(height: 4),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.bounceInOut,
+                  child: IconText(
+                    icon: Icons.star,
+                    text: meal.rating.toString(),
+                    iconColor: Colors.orange,
+                  ),
+                ),
                 IconText(
                   icon: Icons.star,
                   text: meal.rating.toString(),
@@ -127,40 +136,17 @@ GestureDetector buildMealCard(FoodMenuViewModel viewModel, Meal meal) {
             ),
           ),
           Align(
-              alignment: Alignment.centerRight,
-              child: GestureDetector(
-                onTap: () {
-                  viewModel.addToFavorite(meal);
-                },
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 400),
-                  transitionBuilder: (child, animation) {
-                    return ScaleTransition(
-                      scale: Tween<double>(begin: 0.6, end: 1.2).animate(
-                        CurvedAnimation(
-                          parent: animation,
-                          curve: Curves.elasticOut,
-                        ),
-                      ),
-                      child: RotationTransition(
-                        turns: Tween<double>(begin: 0.0, end: 0.1)
-                            .animate(animation),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    viewModel.favoriteMealIds.contains(meal.id)
-                        ? Icons.favorite
-                        : Icons.favorite_border,
-                    key: ValueKey(viewModel.favoriteMealIds.contains(meal.id)),
-                    color: viewModel.favoriteMealIds.contains(meal.id)
-                        ? Colors.red
-                        : Colors.grey,
-                    size: 28,
-                  ),
-                ),
-              )),
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                viewModel.addToFavorite(meal);
+              },
+              child: useSwitcher
+                  ? buildAnimatedSwitcher(viewModel, meal)
+                  // ignore: dead_code
+                  : buildAnimatedContainer(viewModel, meal),
+            ),
+          )
         ],
       ),
     ),
@@ -189,5 +175,44 @@ Widget buildFavorites(FoodMenuViewModel viewModel) {
       final meal = favoriteMeals[index];
       return buildMealCard(viewModel, meal);
     },
+  );
+}
+
+Widget buildAnimatedSwitcher(
+    FoodMenuViewModel viewModel, Meal meal) {
+  final isFav = viewModel.favoriteMealIds.contains(meal.id);
+
+  return AnimatedSwitcher(
+    duration: const Duration(milliseconds: 300),
+    transitionBuilder: (child, animation) {
+      return ScaleTransition(
+        scale: animation,
+        child: child,
+      );
+    },
+    child: Icon(
+      isFav ? Icons.favorite : Icons.favorite_border,
+      key: ValueKey(isFav), 
+      color: isFav ? Colors.red : Colors.grey,
+      size: 28,
+    ),
+  );
+}
+
+Widget buildAnimatedContainer(
+    FoodMenuViewModel viewModel, Meal meal) {
+  final isFav = viewModel.favoriteMealIds.contains(meal.id);
+
+  return AnimatedContainer(
+    duration: const Duration(milliseconds: 300),
+    curve: Curves.bounceOut,
+    transform: isFav
+        ? (Matrix4.identity()..scale(1.3))
+        : Matrix4.identity(),
+    child: Icon(
+      isFav ? Icons.favorite : Icons.favorite_border,
+      color: isFav ? Colors.red : Colors.grey,
+      size: 28,
+    ),
   );
 }

@@ -1,31 +1,24 @@
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacked/stacked.dart';
-import 'package:stacked/stacked_annotations.dart';
 
-class ThemeService
-    with ListenableServiceMixin
-    implements InitializableDependency {
-  static const String themeKey = 'theme_preference';
+class ThemeService {
+  static const _key = 'isDarkMode';
+  final ValueNotifier<ThemeMode> themeModeNotifier =
+      ValueNotifier(ThemeMode.light);
 
-  bool _isDarkMode = false;
-  bool get isDarkMode => _isDarkMode;
-
-  @override
+  /// Load saved theme at startup
   Future<void> init() async {
     final prefs = await SharedPreferences.getInstance();
-    _isDarkMode = prefs.getBool(themeKey) ?? false;
-    notifyListeners();
+    final isDark = prefs.getBool(_key) ?? false;
+    themeModeNotifier.value = isDark ? ThemeMode.dark : ThemeMode.light;
   }
 
-  Future<void> setTheme(bool isDarkMode) async {
+  /// Toggle theme + save
+  Future<void> toggleTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    _isDarkMode = isDarkMode;
-
-    await prefs.setBool(themeKey, isDarkMode);
-    notifyListeners();
-  }
-
-  void toggleTheme() {
-    setTheme(!_isDarkMode);
+    final isDark = themeModeNotifier.value == ThemeMode.dark;
+    final newTheme = isDark ? ThemeMode.light : ThemeMode.dark;
+    themeModeNotifier.value = newTheme;
+    await prefs.setBool(_key, newTheme == ThemeMode.dark);
   }
 }

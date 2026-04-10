@@ -3,21 +3,15 @@ import 'package:stacked_services/stacked_services.dart';
 import 'package:week8/app/app.locator.dart';
 import 'package:week8/app/app.router.dart';
 import 'package:week8/services/auth_service.dart';
-import 'package:week8/services/theme_service.dart';
 
-class StartupViewModel extends ReactiveViewModel {
-  final _themeService = locator<ThemeService>();
+class StartupViewModel extends BaseViewModel {
   final _loginService = locator<AuthService>();
   final _navigationService = locator<NavigationService>();
 
-  @override
-  List<ListenableServiceMixin> get listenableServices =>
-      [_themeService, _loginService];
-
-  bool get isDarkMode => _themeService.isDarkMode;
   bool get isLoggedIn => _loginService.isLoggedIn;
 
   void runStartupLogic() {
+    print('aayush');
     if (isLoggedIn) {
       _navigationService.replaceWithMainView();
     } else {

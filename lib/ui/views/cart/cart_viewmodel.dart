@@ -8,8 +8,9 @@ import 'package:week8/repositories/order_item_repository.dart';
 
 class CartViewModel extends BaseViewModel {
   final CartRepository _cartRepository = locator<CartRepository>();
-  final OrderItemRepository _orderItemRepository =locator<OrderItemRepository>();
-  final DialogService _dialogService=locator<DialogService>();
+  final OrderItemRepository _orderItemRepository =
+      locator<OrderItemRepository>();
+  final DialogService _dialogService = locator<DialogService>();
 
   List<CartItem> _cart = [];
   List<CartItem> get cart => _cart;
@@ -49,38 +50,38 @@ class CartViewModel extends BaseViewModel {
   }
 
   Future<void> addSelectedToOrders() async {
-  setBusy(true);
+    setBusy(true);
 
-  try {
-    for (var item in _selected) {
-      final result = await _orderItemRepository.addToOrder(item);
+    try {
+      for (var item in _selected) {
+        final result = await _orderItemRepository.addToOrder(item);
 
-      if (result is Failure) {
-        setBusy(false);
+        if (result is Failure) {
+          setBusy(false);
 
-        await _dialogService.showDialog(
-          title: 'Error',
-          description: (result as Failure).message,
-        );
+          await _dialogService.showDialog(
+            title: 'Error',
+            description: (result as Failure).message,
+          );
 
-        return;
+          return;
+        }
       }
+
+      clearSelection();
+      setBusy(false);
+
+      await _dialogService.showDialog(
+        title: 'Success',
+        description: 'Items added to orders',
+      );
+    } catch (e) {
+      setBusy(false);
+
+      await _dialogService.showDialog(
+        title: 'Error',
+        description: 'Something went wrong',
+      );
     }
-
-    clearSelection();
-    setBusy(false);
-
-    await _dialogService.showDialog(
-      title: 'Success',
-      description: 'Items added to orders',
-    );
-  } catch (e) {
-    setBusy(false);
-
-    await _dialogService.showDialog(
-      title: 'Error',
-      description: 'Something went wrong',
-    );
   }
-}
 }

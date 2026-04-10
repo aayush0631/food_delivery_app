@@ -2,18 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:week8/models/add_to_cart.dart';
 
-class AddToCartSheet extends StatelessWidget {
+class AddToCartSheet extends StatefulWidget {
   final Function(SheetResponse response)? completer;
   final SheetRequest request;
 
-  AddToCartSheet({
+  const AddToCartSheet({
     Key? key,
     this.completer,
     required this.request,
   }) : super(key: key);
 
+  @override
+  State<AddToCartSheet> createState() => _AddToCartSheetState();
+}
+
+class _AddToCartSheetState extends State<AddToCartSheet> {
   final TextEditingController qtyController = TextEditingController();
   final TextEditingController noteController = TextEditingController();
+
+  @override
+  void dispose() {
+    qtyController.dispose();
+    noteController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +50,7 @@ class AddToCartSheet extends StatelessWidget {
           const SizedBox(height: 10),
           ElevatedButton(
             onPressed: () {
-              completer!(
+              widget.completer!(
                 SheetResponse(
                   confirmed: true,
                   data: AddToCartSheetData(

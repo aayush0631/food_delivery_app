@@ -9,8 +9,9 @@
 import 'package:flutter/material.dart' as _i10;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i12;
+import 'package:stacked_services/stacked_services.dart' as _i13;
 import 'package:week8/models/meals.dart' as _i11;
+import 'package:week8/models/order_item.dart' as _i12;
 import 'package:week8/ui/views/cart/cart_view.dart' as _i5;
 import 'package:week8/ui/views/food_menu/food_menu_view.dart' as _i3;
 import 'package:week8/ui/views/login/login_view.dart' as _i4;
@@ -151,11 +152,10 @@ class StackedRouter extends _i1.RouterBase {
       );
     },
     _i9.OrderDescriptionView: (data) {
-      final args = data.getArgs<OrderDescriptionViewArguments>(
-        orElse: () => const OrderDescriptionViewArguments(),
-      );
+      final args = data.getArgs<OrderDescriptionViewArguments>(nullOk: false);
       return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => _i9.OrderDescriptionView(key: args.key),
+        builder: (context) =>
+            _i9.OrderDescriptionView(key: args.key, order: args.order),
         settings: data,
       );
     },
@@ -328,28 +328,33 @@ class MainViewArguments {
 }
 
 class OrderDescriptionViewArguments {
-  const OrderDescriptionViewArguments({this.key});
+  const OrderDescriptionViewArguments({
+    this.key,
+    required this.order,
+  });
 
   final _i10.Key? key;
 
+  final _i12.OrderItem order;
+
   @override
   String toString() {
-    return '{"key": "$key"}';
+    return '{"key": "$key", "order": "$order"}';
   }
 
   @override
   bool operator ==(covariant OrderDescriptionViewArguments other) {
     if (identical(this, other)) return true;
-    return other.key == key;
+    return other.key == key && other.order == order;
   }
 
   @override
   int get hashCode {
-    return key.hashCode;
+    return key.hashCode ^ order.hashCode;
   }
 }
 
-extension NavigatorStateExtension on _i12.NavigationService {
+extension NavigatorStateExtension on _i13.NavigationService {
   Future<dynamic> navigateToStartupView({
     _i10.Key? key,
     int? routerId,
@@ -465,6 +470,7 @@ extension NavigatorStateExtension on _i12.NavigationService {
 
   Future<dynamic> navigateToOrderDescriptionView({
     _i10.Key? key,
+    required _i12.OrderItem order,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -472,7 +478,7 @@ extension NavigatorStateExtension on _i12.NavigationService {
         transition,
   }) async {
     return navigateTo<dynamic>(Routes.orderDescriptionView,
-        arguments: OrderDescriptionViewArguments(key: key),
+        arguments: OrderDescriptionViewArguments(key: key, order: order),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,
@@ -594,6 +600,7 @@ extension NavigatorStateExtension on _i12.NavigationService {
 
   Future<dynamic> replaceWithOrderDescriptionView({
     _i10.Key? key,
+    required _i12.OrderItem order,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -601,7 +608,7 @@ extension NavigatorStateExtension on _i12.NavigationService {
         transition,
   }) async {
     return replaceWith<dynamic>(Routes.orderDescriptionView,
-        arguments: OrderDescriptionViewArguments(key: key),
+        arguments: OrderDescriptionViewArguments(key: key, order: order),
         id: routerId,
         preventDuplicates: preventDuplicates,
         parameters: parameters,

@@ -33,7 +33,7 @@ class OrdersViewModel extends BaseViewModel {
     _navigationService.navigateToCartView();
   }
 
-  void navigateeToOrderDescrition() {
-    _navigationService.navigateToOrderDescriptionView();
+  void navigateeToOrderDescrition(OrderItem order) {
+    _navigationService.navigateToOrderDescriptionView(order: order);
   }
 }

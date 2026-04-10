@@ -6,7 +6,7 @@ import 'orders_viewmodel.dart';
 class OrdersView extends StackedView<OrdersViewModel> {
   const OrdersView({Key? key}) : super(key: key);
 
-    @override
+  @override
   void onViewModelReady(OrdersViewModel viewModel) {
     viewModel.fetchOrderedItems();
   }
@@ -52,7 +52,7 @@ class OrdersView extends StackedView<OrdersViewModel> {
                         final orders = viewModel.orders[index];
                         return GestureDetector(
                           onTap: () {
-                            viewModel.navigateeToOrderDescrition();
+                            viewModel.navigateeToOrderDescrition(orders);
                           },
                           child: Card(
                             margin: EdgeInsets.zero,

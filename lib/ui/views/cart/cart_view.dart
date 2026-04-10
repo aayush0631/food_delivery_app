@@ -34,6 +34,7 @@ class CartView extends StackedView<CartViewModel> {
         title: const Text("Cart"),
       ),
 
+      //only appear when atleast one is selected
       floatingActionButton: viewModel.isSelectionMode
           ? FloatingActionButton.extended(
               onPressed: viewModel.isBusy
@@ -51,9 +52,7 @@ class CartView extends StackedView<CartViewModel> {
               label: Text(viewModel.isBusy ? "Adding..." : "Add"),
             )
           : null,
-
       backgroundColor: Theme.of(context).colorScheme.surface,
-
       body: GridView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: viewModel.cart.length,
@@ -68,9 +67,11 @@ class CartView extends StackedView<CartViewModel> {
           final isSelected = viewModel.selectedItems.contains(cart);
 
           return GestureDetector(
+            //to start selecting item
             onLongPress: () {
               viewModel.toggleStateOfSelection(cart);
             },
+            //to add or remove item form selected list
             onTap: () {
               if (viewModel.isSelectionMode) {
                 viewModel.toggleStateOfSelection(cart);
@@ -89,7 +90,8 @@ class CartView extends StackedView<CartViewModel> {
                 children: [
                   AnimatedOpacity(
                     duration: const Duration(milliseconds: 200),
-                    opacity: isSelected ? 0.85 : 1.0,
+                    // turn light when selected
+                    opacity: isSelected ? 0.5 : 1.0,
                     child: Card(
                       margin: EdgeInsets.zero,
                       child: Column(
@@ -117,6 +119,7 @@ class CartView extends StackedView<CartViewModel> {
                       ),
                     ),
                   ),
+                  // creates circular tick button
                   if (isSelected)
                     Positioned(
                       top: 8,

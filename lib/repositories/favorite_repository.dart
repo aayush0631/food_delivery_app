@@ -3,6 +3,7 @@ import 'package:week8/app/app.locator.dart';
 import 'package:week8/core/utils/db_error_handler.dart';
 import 'package:week8/core/utils/results.dart';
 import 'package:week8/models/favorite.dart';
+import 'package:week8/models/meals.dart';
 import 'package:week8/services/database_service.dart';
 
 class FavoriteRepository {
@@ -20,9 +21,14 @@ class FavoriteRepository {
     }
   }
 
-  Future<Results<int>> addToFavorite(Favorite fItem) async {
+  Future<Results<int>> addToFavorite(Meal mealItem) async {
+    final item = Favorite(
+      mealId: mealItem.id,
+      mealName: mealItem.name,
+      mealImage: mealItem.image,
+    );
     try {
-      final id = await _databaseService.insertFavorite(fItem);
+      final id = await _databaseService.insertFavorite(item);
       return Success(id);
     } catch (e) {
       if (e is DatabaseException) {

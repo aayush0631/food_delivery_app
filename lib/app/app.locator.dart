@@ -14,6 +14,7 @@ import 'package:stacked_shared/stacked_shared.dart';
 
 import '../repositories/cart_repository.dart';
 import '../repositories/favorite_repository.dart';
+import '../repositories/order_item_repository.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
 import '../services/database_service.dart';
@@ -43,4 +44,5 @@ Future<void> setupLocator(
   locator.registerSingleton(DatabaseService());
   locator.registerLazySingleton(() => CartRepository());
   locator.registerLazySingleton(() => FavoriteRepository());
+  locator.registerLazySingleton(() => OrderItemRepository());
 }

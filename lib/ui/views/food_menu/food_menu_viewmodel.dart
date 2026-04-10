@@ -41,13 +41,8 @@ class FoodMenuViewModel extends BaseViewModel {
   }
 
   Future<void> addToFavorite(Meal mealItem) async {
-    final item = Favorite(
-      mealId: mealItem.id,
-      mealName: mealItem.name,
-      mealImage: mealItem.image,
-    );
     toggleFavorite(mealItem);
-    await runBusyFuture(_favoriteRepository.addToFavorite(item));
+    await runBusyFuture(_favoriteRepository.addToFavorite(mealItem));
   }
 
   void nav() {

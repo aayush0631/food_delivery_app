@@ -11,6 +11,7 @@ class FoodMenuView extends StackedView<FoodMenuViewModel> {
   @override
   void onViewModelReady(FoodMenuViewModel viewModel) {
     viewModel.fetchMeals();
+    viewModel.favoriteMealIds();
   }
 
   @override
@@ -87,12 +88,17 @@ GestureDetector buildMealCard(FoodMenuViewModel viewModel, Meal meal) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
+              child: Hero(
+            tag: meal.id,
+            createRectTween: (begin, end) {
+              return RectTween(begin: begin, end: end);
+            },
             child: Image.network(
               meal.image,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
-          ),
+          )),
           Padding(
             padding: const EdgeInsets.all(8),
             child: Column(
@@ -122,18 +128,38 @@ GestureDetector buildMealCard(FoodMenuViewModel viewModel, Meal meal) {
           ),
           Align(
               alignment: Alignment.centerRight,
-              child: IconButton(
-                icon: Icon(
-                  viewModel.favoriteMealIds.contains(meal.id)
-                      ? Icons.favorite
-                      : Icons.favorite_border,
-                  color: viewModel.favoriteMealIds.contains(meal.id)
-                      ? Colors.red
-                      : Colors.grey,
-                ),
-                onPressed: () async {
+              child: GestureDetector(
+                onTap: () {
                   viewModel.addToFavorite(meal);
                 },
+                child: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 400),
+                  transitionBuilder: (child, animation) {
+                    return ScaleTransition(
+                      scale: Tween<double>(begin: 0.6, end: 1.2).animate(
+                        CurvedAnimation(
+                          parent: animation,
+                          curve: Curves.elasticOut,
+                        ),
+                      ),
+                      child: RotationTransition(
+                        turns: Tween<double>(begin: 0.0, end: 0.1)
+                            .animate(animation),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: Icon(
+                    viewModel.favoriteMealIds.contains(meal.id)
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    key: ValueKey(viewModel.favoriteMealIds.contains(meal.id)),
+                    color: viewModel.favoriteMealIds.contains(meal.id)
+                        ? Colors.red
+                        : Colors.grey,
+                    size: 28,
+                  ),
+                ),
               )),
         ],
       ),

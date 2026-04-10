@@ -1,6 +1,5 @@
 class OrderItem {
   final int? id;
-  final int orderId;
   final String mealId;
   final String mealName;
   final String mealImage;
@@ -9,7 +8,6 @@ class OrderItem {
 
   OrderItem({
     this.id,
-    required this.orderId,
     required this.mealId,
     required this.mealName,
     required this.mealImage,
@@ -20,7 +18,6 @@ class OrderItem {
   factory OrderItem.fromMap(Map<String, dynamic> map) {
     return OrderItem(
       id: map['id'],
-      orderId: map['order_id'],
       mealId: map['meal_id'],
       mealName: map['meal_name'],
       mealImage: map['meal_image'],
@@ -32,7 +29,6 @@ class OrderItem {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'order_id': orderId,
       'meal_id': mealId,
       'meal_name': mealName,
       'meal_image': mealImage,

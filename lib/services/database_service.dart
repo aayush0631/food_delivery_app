@@ -4,12 +4,11 @@ import 'package:sqflite/sqflite.dart';
 import 'package:week8/core/constants/db_constants.dart';
 import 'package:week8/models/cart.dart';
 import 'package:week8/models/favorite.dart';
-import 'package:week8/models/order.dart';
 import 'package:week8/models/order_item.dart';
 import 'package:week8/models/user.dart';
 
 class DatabaseService {
-  static const int dbVersion = 2;
+  static const int dbVersion = 3;
   static const String dbName = 'food_delivery_app.db';
   Database? _database;
   // DATABASE GETTER
@@ -54,19 +53,8 @@ class DatabaseService {
   ''');
 
     await db.execute('''
-    CREATE TABLE ${DBTables.orders}(
-      ${OrderColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-      ${OrderColumns.userId} INTEGER,
-      ${OrderColumns.totalAmount} REAL,
-      ${OrderColumns.status} TEXT,
-      ${OrderColumns.createdAt} TEXT
-    );
-  ''');
-
-    await db.execute('''
     CREATE TABLE ${DBTables.orderItems}(
       ${OrderItemColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-      ${OrderItemColumns.orderId} INTEGER,
       ${OrderItemColumns.mealId} TEXT,
       ${OrderItemColumns.mealName} TEXT,
       ${OrderItemColumns.mealImage} TEXT,
@@ -83,27 +71,12 @@ class DatabaseService {
       ${FavoriteColumns.mealImage} TEXT
     );
   ''');
-
-    await db.execute('''
-    CREATE TABLE ${DBTables.delivery}(
-      ${DeliveryColumns.id} INTEGER PRIMARY KEY AUTOINCREMENT,
-      ${DeliveryColumns.orderId} INTEGER,
-      ${DeliveryColumns.latitude} REAL,
-      ${DeliveryColumns.longitude} REAL,
-      ${DeliveryColumns.status} TEXT
-    );
-  ''');
   }
 
   // get all the cart items
   Future<List<Map<String, dynamic>>> getCart() async {
     final db = await database;
     return await db.query(DBTables.cart);
-  }
-
-  Future<List<Map<String, dynamic>>> getOrder() async {
-    final db = await database;
-    return await db.query(DBTables.orders);
   }
 
   Future<List<Map<String, dynamic>>> getOrdereItem() async {
@@ -124,12 +97,6 @@ class DatabaseService {
   Future<int> insertCart(CartItem item) async {
     final db = await database;
     return db.insert(DBTables.cart, item.toMap());
-  }
-
-  Future<int> insertOrders(Order data) async {
-    final db = await database;
-    final insertData = data.toMap();
-    return db.insert(DBTables.orders, insertData);
   }
 
   Future<int> insertOrderItem(OrderItem data) async {

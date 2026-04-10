@@ -20,11 +20,14 @@ class MealDescriptionView extends StackedView<MealDescriptionViewModel> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.network(
-              meal.image,
-              width: double.infinity,
-              height: 250,
-              fit: BoxFit.cover,
+            Hero(
+              tag: meal.id,
+              child: Image.network(
+                meal.image,
+                width: double.infinity,
+                height: 250,
+                fit: BoxFit.cover,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(16),

@@ -10,6 +10,8 @@ class CookingAnimation extends StatefulWidget {
 
 class _CookingAnimationState extends State<CookingAnimation> {
   bool isCooked = false;
+  int rating = 0;
+  bool showRating = false;
 
   @override
   Widget build(BuildContext context) {
@@ -20,23 +22,28 @@ class _CookingAnimationState extends State<CookingAnimation> {
         setState(() {
           isCooked = true;
         });
+        Future.delayed(const Duration(seconds: 1), () {
+          setState(() {
+            showRating = true;
+          });
+        });
       },
       builder: (context, value, child) {
         final progress = value / 10;
         return Column(
           children: [
             AnimatedOpacity(
-              opacity: isCooked? 0 :progress, 
+              opacity: isCooked ? 0 : progress,
               duration: const Duration(milliseconds: 300),
               child: Hero(
-              tag: widget.order.id!,
-              child: Image.network(
-                widget.order.mealImage,
-                width: double.infinity,
-                height: 250,
-                fit: BoxFit.cover,
+                tag: widget.order.id!,
+                child: Image.network(
+                  widget.order.mealImage,
+                  width: double.infinity,
+                  height: 250,
+                  fit: BoxFit.cover,
+                ),
               ),
-            ),
             ),
             Expanded(
               child: Center(
@@ -60,7 +67,7 @@ class _CookingAnimationState extends State<CookingAnimation> {
                     ),
                     const SizedBox(height: 20),
                     SizedBox(
-                      width: 300, 
+                      width: 300,
                       child: LinearProgressIndicator(value: progress),
                     ),
                     const SizedBox(height: 20),
@@ -75,6 +82,40 @@ class _CookingAnimationState extends State<CookingAnimation> {
                 ),
               ),
             ),
+            if (showRating) ...[
+              const SizedBox(height: 30),
+              const Text(
+                "Rate your experience",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(5, (index) {
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        rating = index + 1;
+                      });
+                    },
+                    child: AnimatedScale(
+                      scale: rating > index ? 1.3 : 1.0,
+                      duration: const Duration(milliseconds: 200),
+                      child: Icon(
+                        Icons.star,
+                        size: 35,
+                        color: rating > index ? Colors.orange : Colors.grey,
+                      ),
+                    ),
+                  );
+                }),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                rating == 0 ? "Tap to rate" : "You rated $rating ⭐",
+                style: const TextStyle(fontSize: 16),
+              ),
+            ]
           ],
         );
       },

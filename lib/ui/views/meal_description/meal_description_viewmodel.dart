@@ -32,7 +32,6 @@ class MealDescriptionViewModel extends BaseViewModel {
         mealImage: meal.image,
         price: meal.price,
       );
-
       await addToCart(item);
     }
   }

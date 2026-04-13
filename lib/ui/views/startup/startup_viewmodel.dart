@@ -11,7 +11,6 @@ class StartupViewModel extends BaseViewModel {
   bool get isLoggedIn => _loginService.isLoggedIn;
 
   void runStartupLogic() {
-    print('aayush');
     if (isLoggedIn) {
       _navigationService.replaceWithMainView();
     } else {

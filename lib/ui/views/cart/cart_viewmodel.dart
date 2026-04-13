@@ -43,41 +43,36 @@ class CartViewModel extends BaseViewModel {
 
     if (result is Success<List<CartItem>>) {
       _cart = result.data;
-      notifyListeners();
     } else if (result is Failure) {
       setError((result as Failure).message);
     }
+
+    notifyListeners();
   }
 
   Future<void> addSelectedToOrders() async {
-    setBusy(true);
+    final result = await runBusyFuture(
+      Future.wait(_selected.map((item) {
+        return _orderItemRepository.addToOrder(item);
+      })),
+    );
 
     try {
-      for (var item in _selected) {
-        final result = await _orderItemRepository.addToOrder(item);
-
-        if (result is Failure) {
-          setBusy(false);
-
-          await _dialogService.showDialog(
-            title: 'Error',
-            description: (result as Failure).message,
-          );
-
-          return;
-        }
+      // Check if any failed
+      final failures = result.whereType<Failure>().toList();
+      if (failures.isNotEmpty) {
+        await _dialogService.showDialog(
+          title: 'Error',
+          description: failures.first.message,
+        );
+        return;
       }
-
       clearSelection();
-      setBusy(false);
-
       await _dialogService.showDialog(
         title: 'Success',
         description: 'Items added to orders',
       );
     } catch (e) {
-      setBusy(false);
-
       await _dialogService.showDialog(
         title: 'Error',
         description: 'Something went wrong',

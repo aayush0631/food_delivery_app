@@ -89,11 +89,6 @@ class DatabaseService {
     return await db.query(DBTables.favorites);
   }
 
-  Future<List<Map<String, dynamic>>> getDelivery() async {
-    final db = await database;
-    return await db.query(DBTables.delivery);
-  }
-
   Future<int> insertCart(CartItem item) async {
     final db = await database;
     return db.insert(DBTables.cart, item.toMap());

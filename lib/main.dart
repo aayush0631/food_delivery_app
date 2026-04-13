@@ -5,7 +5,6 @@ import 'package:week8/app/app.dialogs.dart';
 import 'package:week8/app/app.locator.dart';
 import 'package:week8/app/app.router.dart';
 import 'package:week8/services/theme_service.dart';
-import 'package:week8/ui/views/startup/startup_view.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +21,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeService = locator<ThemeService>();
-
     return ValueListenableBuilder<ThemeMode>(
       valueListenable: themeService.themeModeNotifier,
       builder: (context, themeMode, child) {

@@ -6,6 +6,7 @@ import 'package:week8/services/auth_service.dart';
 import 'package:week8/ui/views/login/login_view.form.dart';
 
 class LoginViewModel extends FormViewModel with $LoginView {
+  // ignore: unused_field
   final _authService = locator<AuthService>();
   final _navigationService = locator<NavigationService>();
 
@@ -28,4 +29,12 @@ class LoginViewModel extends FormViewModel with $LoginView {
       _navigationService.replaceWithMainView();
     }
   }
+
+  // @override
+  // void dispose() {
+  //   usernameController.dispose();
+  //   passwordController.dispose();
+  //   emailController.dispose();
+  //   super.dispose();
+  // }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
+import 'package:week8/core/utils/error_view.dart';
 import 'package:week8/ui/views/cart/widgets/selectino_animation_widget.dart';
 import 'cart_viewmodel.dart';
 
 class CartView extends StackedView<CartViewModel> {
   const CartView({Key? key}) : super(key: key);
-
   @override
   void onViewModelReady(CartViewModel viewModel) {
     viewModel.fetchCartItems();
@@ -17,25 +17,11 @@ class CartView extends StackedView<CartViewModel> {
     CartViewModel viewModel,
     Widget? child,
   ) {
-    if (viewModel.isBusy) {
-      return const Scaffold(
-        body: Center(child: CircularProgressIndicator()),
-      );
-    }
-
-    if (viewModel.cart.isEmpty) {
-      return const Scaffold(
-        body: Center(child: Text("Cart is empty")),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.deepOrange,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text("Cart"),
       ),
-
-      //only appear when atleast one is selected
       floatingActionButton: viewModel.isSelectionMode
           ? FloatingActionButton.extended(
               onPressed: viewModel.isBusy
@@ -54,32 +40,18 @@ class CartView extends StackedView<CartViewModel> {
             )
           : null,
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        itemCount: viewModel.cart.length,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 0.8,
-        ),
-        itemBuilder: (context, index) {
-          final cart = viewModel.cart[index];
-          final isSelected = viewModel.selectedItems.contains(cart);
-
-          return GestureDetector(
-            //to start selecting item
-            onLongPress: () {
-              viewModel.toggleStateOfSelection(cart);
-            },
-            //to add or remove item form selected list
-            onTap: () {
-              if (viewModel.isSelectionMode) {
-                viewModel.toggleStateOfSelection(cart);
-              }
-            },
-            child: SelectionAnimationWidget(isSelected: isSelected, cart: cart),
-          );
+      body: Builder(
+        builder: (_) {
+          if (viewModel.hasError) {
+            return ErrorView(message: viewModel.modelError!);
+          }
+          if (viewModel.isBusy) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (viewModel.cart.isEmpty) {
+            return const Center(child: Text("Cart is empty"));
+          }
+          return CartGrid(viewModel: viewModel);
         },
       ),
     );
@@ -89,3 +61,44 @@ class CartView extends StackedView<CartViewModel> {
   CartViewModel viewModelBuilder(BuildContext context) => CartViewModel();
 }
 
+class CartGrid extends StatelessWidget {
+  final CartViewModel viewModel;
+  const CartGrid({super.key, required this.viewModel});
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: viewModel.cart.length,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 12,
+        mainAxisSpacing: 12,
+        childAspectRatio: 0.8,
+      ),
+      itemBuilder: (context, index) {
+        final cart = viewModel.cart[index];
+        final isSelected = viewModel.selectedItems.contains(cart);
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(12),
+            // Start selection mode
+            onLongPress: () {
+              viewModel.toggleStateOfSelection(cart);
+            },
+            // Toggle selection if already in selection mode
+            onTap: () {
+              if (viewModel.isSelectionMode) {
+                viewModel.toggleStateOfSelection(cart);
+              }
+            },
+            child: SelectionAnimationWidget(
+              isSelected: isSelected,
+              cart: cart,
+            ),
+          ),
+        );
+      },
+    );
+  }
+}

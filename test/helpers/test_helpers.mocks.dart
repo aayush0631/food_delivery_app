@@ -11,15 +11,16 @@ import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i5;
 import 'package:sqflite/sqflite.dart' as _i3;
 import 'package:stacked_services/stacked_services.dart' as _i4;
-import 'package:week8/models/cart.dart' as _i13;
-import 'package:week8/models/favorite.dart' as _i15;
-import 'package:week8/models/meals.dart' as _i9;
-import 'package:week8/models/order_item.dart' as _i14;
-import 'package:week8/models/user.dart' as _i16;
+import 'package:week8/core/utils/results.dart' as _i9;
+import 'package:week8/models/cart.dart' as _i14;
+import 'package:week8/models/favorite.dart' as _i16;
+import 'package:week8/models/meals.dart' as _i10;
+import 'package:week8/models/order_item.dart' as _i15;
+import 'package:week8/models/user.dart' as _i17;
 import 'package:week8/services/api_service.dart' as _i8;
-import 'package:week8/services/auth_service.dart' as _i11;
-import 'package:week8/services/database_service.dart' as _i12;
-import 'package:week8/services/theme_service.dart' as _i10;
+import 'package:week8/services/auth_service.dart' as _i12;
+import 'package:week8/services/database_service.dart' as _i13;
+import 'package:week8/services/theme_service.dart' as _i11;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -731,21 +732,35 @@ class MockDialogService extends _i1.Mock implements _i4.DialogService {
 /// See the documentation for Mockito's code generation for more information.
 class MockApiService extends _i1.Mock implements _i8.ApiService {
   @override
-  _i6.Future<List<_i9.Meal>> getMeals() => (super.noSuchMethod(
+  _i6.Future<_i9.Results<List<_i10.Meal>>> getMeals() => (super.noSuchMethod(
         Invocation.method(
           #getMeals,
           [],
         ),
-        returnValue: _i6.Future<List<_i9.Meal>>.value(<_i9.Meal>[]),
+        returnValue: _i6.Future<_i9.Results<List<_i10.Meal>>>.value(
+            _i5.dummyValue<_i9.Results<List<_i10.Meal>>>(
+          this,
+          Invocation.method(
+            #getMeals,
+            [],
+          ),
+        )),
         returnValueForMissingStub:
-            _i6.Future<List<_i9.Meal>>.value(<_i9.Meal>[]),
-      ) as _i6.Future<List<_i9.Meal>>);
+            _i6.Future<_i9.Results<List<_i10.Meal>>>.value(
+                _i5.dummyValue<_i9.Results<List<_i10.Meal>>>(
+          this,
+          Invocation.method(
+            #getMeals,
+            [],
+          ),
+        )),
+      ) as _i6.Future<_i9.Results<List<_i10.Meal>>>);
 }
 
 /// A class which mocks [ThemeService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockThemeService extends _i1.Mock implements _i10.ThemeService {
+class MockThemeService extends _i1.Mock implements _i11.ThemeService {
   @override
   _i2.ValueNotifier<_i2.ThemeMode> get themeModeNotifier => (super.noSuchMethod(
         Invocation.getter(#themeModeNotifier),
@@ -783,7 +798,7 @@ class MockThemeService extends _i1.Mock implements _i10.ThemeService {
 /// A class which mocks [AuthService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAuthService extends _i1.Mock implements _i11.AuthService {
+class MockAuthService extends _i1.Mock implements _i12.AuthService {
   @override
   bool get isLoggedIn => (super.noSuchMethod(
         Invocation.getter(#isLoggedIn),
@@ -882,7 +897,7 @@ class MockAuthService extends _i1.Mock implements _i11.AuthService {
 /// A class which mocks [DatabaseService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDatabaseService extends _i1.Mock implements _i12.DatabaseService {
+class MockDatabaseService extends _i1.Mock implements _i13.DatabaseService {
   @override
   _i6.Future<_i3.Database> get database => (super.noSuchMethod(
         Invocation.getter(#database),
@@ -934,19 +949,7 @@ class MockDatabaseService extends _i1.Mock implements _i12.DatabaseService {
       ) as _i6.Future<List<Map<String, dynamic>>>);
 
   @override
-  _i6.Future<List<Map<String, dynamic>>> getDelivery() => (super.noSuchMethod(
-        Invocation.method(
-          #getDelivery,
-          [],
-        ),
-        returnValue: _i6.Future<List<Map<String, dynamic>>>.value(
-            <Map<String, dynamic>>[]),
-        returnValueForMissingStub: _i6.Future<List<Map<String, dynamic>>>.value(
-            <Map<String, dynamic>>[]),
-      ) as _i6.Future<List<Map<String, dynamic>>>);
-
-  @override
-  _i6.Future<int> insertCart(_i13.CartItem? item) => (super.noSuchMethod(
+  _i6.Future<int> insertCart(_i14.CartItem? item) => (super.noSuchMethod(
         Invocation.method(
           #insertCart,
           [item],
@@ -956,7 +959,7 @@ class MockDatabaseService extends _i1.Mock implements _i12.DatabaseService {
       ) as _i6.Future<int>);
 
   @override
-  _i6.Future<int> insertOrderItem(_i14.OrderItem? data) => (super.noSuchMethod(
+  _i6.Future<int> insertOrderItem(_i15.OrderItem? data) => (super.noSuchMethod(
         Invocation.method(
           #insertOrderItem,
           [data],
@@ -966,7 +969,7 @@ class MockDatabaseService extends _i1.Mock implements _i12.DatabaseService {
       ) as _i6.Future<int>);
 
   @override
-  _i6.Future<int> insertFavorite(_i15.Favorite? data) => (super.noSuchMethod(
+  _i6.Future<int> insertFavorite(_i16.Favorite? data) => (super.noSuchMethod(
         Invocation.method(
           #insertFavorite,
           [data],
@@ -976,7 +979,7 @@ class MockDatabaseService extends _i1.Mock implements _i12.DatabaseService {
       ) as _i6.Future<int>);
 
   @override
-  _i6.Future<int> insertUsers(_i16.User? data) => (super.noSuchMethod(
+  _i6.Future<int> insertUsers(_i17.User? data) => (super.noSuchMethod(
         Invocation.method(
           #insertUsers,
           [data],

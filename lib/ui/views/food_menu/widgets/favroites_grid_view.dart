@@ -3,8 +3,9 @@ import 'package:week8/ui/views/food_menu/food_menu_viewmodel.dart';
 import 'package:week8/ui/views/food_menu/widgets/meal_card_widget.dart';
 
 class FavoritesGrid extends StatelessWidget {
+  final GlobalKey cartKey;
   final FoodMenuViewModel viewModel;
-  const FavoritesGrid({super.key, required this.viewModel});
+  const FavoritesGrid({super.key, required this.viewModel, required this.cartKey});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class FavoritesGrid extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final meal = favoriteMeals[index];
-        return MealCard(viewModel: viewModel, meal: meal);
+        return MealCard(viewModel: viewModel, meal: meal,cartKey: cartKey,);
       },
     );
   }

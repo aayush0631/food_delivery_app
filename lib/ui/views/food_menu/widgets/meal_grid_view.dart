@@ -4,7 +4,8 @@ import 'package:week8/ui/views/food_menu/widgets/meal_card_widget.dart';
 
 class MealGrid extends StatelessWidget {
   final FoodMenuViewModel viewModel;
-  const MealGrid({super.key, required this.viewModel});
+  final GlobalKey cartKey;
+  const MealGrid({super.key, required this.viewModel,required this.cartKey});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +20,11 @@ class MealGrid extends StatelessWidget {
       ),
       itemBuilder: (context, index) {
         final meal = viewModel.meals[index];
-        return MealCard(viewModel: viewModel, meal: meal);
+        return MealCard(
+          viewModel: viewModel, 
+          meal: meal,
+          cartKey:cartKey
+        );
       },
     );
   }

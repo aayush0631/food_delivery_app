@@ -5,5 +5,5 @@ import 'package:week8/ui/views/orders/orders_view.dart';
 
 class MainViewModel extends IndexTrackingViewModel {
   //list of screens
-  List<Widget> get views => const [FoodMenuView(), OrdersView()];
+  List<Widget> get views => [FoodMenuView(),const OrdersView()];
 }

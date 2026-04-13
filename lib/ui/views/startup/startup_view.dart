@@ -12,7 +12,7 @@ class StartupView extends StackedView<StartupViewModel> {
     return Scaffold(
       body: Center(
         child: Lottie.asset(
-          'assets/animations/spoon.json',
+          'assets/animations/loading.json',
           width: 180,
           repeat: true,
         ),

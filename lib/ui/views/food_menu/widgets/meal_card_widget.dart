@@ -1,15 +1,19 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:week8/core/widgets/icon_text_widget.dart';
 import 'package:week8/models/meals.dart';
 import 'package:week8/ui/views/food_menu/food_menu_viewmodel.dart';
+import 'package:week8/ui/views/food_menu/widgets/add_to_cart_animation.dart';
 
 class MealCard extends StatelessWidget {
   final FoodMenuViewModel viewModel;
   final Meal meal;
-  const MealCard({super.key, required this.viewModel, required this.meal});
-
+  final GlobalKey cartKey;
+  MealCard(
+      {super.key,
+      required this.viewModel,
+      required this.meal,
+      required this.cartKey});
+  final GlobalKey itemKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     final isFav = viewModel.favoriteMealIds.contains(meal.id);
@@ -20,6 +24,7 @@ class MealCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: () => viewModel.openMealDescription(meal),
         child: Card(
+          key: itemKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -60,19 +65,49 @@ class MealCard extends StatelessWidget {
               ),
               Align(
                 alignment: Alignment.centerRight,
-                child: IconButton(
-                  onPressed: () => viewModel.addToFavorite(meal),
-                  icon: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    transitionBuilder: (child, animation) {
-                      return ScaleTransition(scale: animation, child: child);
-                    },
-                    child: Icon(
-                      isFav ? Icons.favorite : Icons.favorite_border,
-                      key: ValueKey(isFav),
-                      color: isFav ? Colors.red : Colors.grey,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                        icon: const Icon(Icons.shopping_cart),
+                        onPressed: () async {
+                          final confirmed =
+                              await viewModel.openAddToCartSheet(meal);
+
+                          if (!confirmed) return;
+
+                          // ✅ delay to avoid flicker
+                          await Future.delayed(
+                              const Duration(milliseconds: 300));
+
+                          final startBox = itemKey.currentContext!
+                              .findRenderObject() as RenderBox;
+                          final endBox = cartKey.currentContext!
+                              .findRenderObject() as RenderBox;
+
+                          final start = startBox.localToGlobal(Offset.zero);
+                          final end = endBox.localToGlobal(Offset.zero);
+                          final size = startBox.size;
+
+                          showFlyAnimation(
+                              context, start, end, meal.image, size);
+                        }),
+                    IconButton(
+                      onPressed: () => viewModel.addToFavorite(meal),
+                      icon: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 300),
+                        transitionBuilder: (child, animation) {
+                          return ScaleTransition(
+                              scale: animation, child: child);
+                        },
+                        child: Icon(
+                          isFav ? Icons.favorite : Icons.favorite_border,
+                          key: ValueKey(isFav),
+                          color: isFav ? Colors.red : Colors.grey,
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               )
             ],
@@ -81,4 +116,29 @@ class MealCard extends StatelessWidget {
       ),
     );
   }
+}
+
+void showFlyAnimation(
+  BuildContext context,
+  Offset start,
+  Offset end,
+  String image,
+  Size size,
+) {
+  final overlay = Overlay.of(context);
+
+  final entry = OverlayEntry(
+    builder: (context) => AnimatedFlyWidget(
+      start: start,
+      end: end,
+      image: image,
+      size: size,
+    ),
+  );
+
+  overlay.insert(entry);
+
+  Future.delayed(const Duration(milliseconds: 1300), () {
+    entry.remove();
+  });
 }

@@ -6,12 +6,14 @@ import 'package:week8/ui/views/food_menu/widgets/meal_grid_view.dart';
 import 'food_menu_viewmodel.dart';
 
 class FoodMenuView extends StackedView<FoodMenuViewModel> {
-  const FoodMenuView({Key? key}) : super(key: key);
+  FoodMenuView({Key? key}) : super(key: key);
 
   @override
   void onViewModelReady(FoodMenuViewModel viewModel) {
     viewModel.fetchMeals();
   }
+
+  final GlobalKey cartKey = GlobalKey();
 
   @override
   Widget builder(
@@ -31,6 +33,7 @@ class FoodMenuView extends StackedView<FoodMenuViewModel> {
               icon: const Icon(Icons.brightness_6),
             ),
             IconButton(
+              key: cartKey,
               onPressed: viewModel.nav,
               icon: const Icon(Icons.shopping_cart),
             )
@@ -49,10 +52,13 @@ class FoodMenuView extends StackedView<FoodMenuViewModel> {
                 if (!viewModel.hasMeals) {
                   return const Center(child: Text("No meals found"));
                 }
-                return MealGrid(viewModel: viewModel);
+                return MealGrid(
+                  viewModel: viewModel,
+                  cartKey:cartKey
+                );
               },
             ),
-            FavoritesGrid(viewModel: viewModel),
+            FavoritesGrid(viewModel: viewModel, cartKey: cartKey,),
           ],
         ),
       ),
@@ -63,5 +69,3 @@ class FoodMenuView extends StackedView<FoodMenuViewModel> {
   FoodMenuViewModel viewModelBuilder(BuildContext context) =>
       FoodMenuViewModel();
 }
-
-

@@ -16,7 +16,7 @@ class RatingAnimationState extends State<RatingAnimation>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+    _controller = AnimationController(  
         vsync: this, duration: const Duration(milliseconds: 300));
     _scaleAnimation = Tween<double>(begin: 1.0, end: 1.6).animate(
         CurvedAnimation(parent: _controller, curve: Curves.elasticOut));

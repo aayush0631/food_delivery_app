@@ -987,4 +987,14 @@ class MockDatabaseService extends _i1.Mock implements _i13.DatabaseService {
         returnValue: _i6.Future<int>.value(0),
         returnValueForMissingStub: _i6.Future<int>.value(0),
       ) as _i6.Future<int>);
+
+  @override
+  _i6.Future<int> deleteOrderItem(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #deleteOrderItem,
+          [id],
+        ),
+        returnValue: _i6.Future<int>.value(0),
+        returnValueForMissingStub: _i6.Future<int>.value(0),
+      ) as _i6.Future<int>);
 }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class RatingAnimation extends StatefulWidget {
-  bool isfilled;
+  final bool isfilled;
 
-  RatingAnimation({super.key, required this.isfilled});
+  const RatingAnimation({super.key, required this.isfilled});
   @override
   State<RatingAnimation> createState() => RatingAnimationState();
 }

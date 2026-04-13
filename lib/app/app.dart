@@ -1,3 +1,4 @@
+import 'package:stacked/stacked.dart';
 import 'package:week8/repositories/cart_repository.dart';
 import 'package:week8/repositories/favorite_repository.dart';
 import 'package:week8/repositories/order_item_repository.dart';
@@ -24,9 +25,13 @@ import 'package:week8/ui/views/order_description/order_description_view.dart';
     MaterialRoute(page: StartupView),
     MaterialRoute(page: FoodMenuView),
     MaterialRoute(page: LoginView),
-    MaterialRoute(page: CartView),
+    CustomRoute(page: CartView, transitionsBuilder: TransitionsBuilders.fadeIn,durationInMilliseconds: 600),
     MaterialRoute(page: MealDescriptionView),
-    MaterialRoute(page: OrdersView),
+    CustomRoute(
+      page: OrdersView,
+      transitionsBuilder: TransitionsBuilders.slideLeft,
+      durationInMilliseconds: 300,
+    ),
     MaterialRoute(page: MainView),
     MaterialRoute(page: OrderDescriptionView),
 // @stacked-route

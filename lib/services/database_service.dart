@@ -8,8 +8,8 @@ import 'package:week8/models/order_item.dart';
 import 'package:week8/models/user.dart';
 
 class DatabaseService {
-  static const int dbVersion = 3;
-  static const String dbName = 'food_delivery_app.db';
+  static const int dbVersion = 4;
+  static const String dbName = 'food_delivery_apps.db';
   Database? _database;
   // DATABASE GETTER
   Future<Database> get database async {
@@ -59,7 +59,8 @@ class DatabaseService {
       ${OrderItemColumns.mealName} TEXT,
       ${OrderItemColumns.mealImage} TEXT,
       ${OrderItemColumns.price} REAL,
-      ${OrderItemColumns.quantity} INTEGER
+      ${OrderItemColumns.quantity} INTEGER,
+      ${OrderItemColumns.status} TEXT
     );
   ''');
 
@@ -110,5 +111,14 @@ class DatabaseService {
     final db = await database;
     final insertData = data.toMap();
     return db.insert(DBTables.user, insertData);
+  }
+
+  Future<int> deleteOrderItem(int id) async {
+    final db = await database;
+    return await db.delete(
+      DBTables.orderItems,
+      where: '${OrderItemColumns.id} = ?',
+      whereArgs: [id],
+    );
   }
 }

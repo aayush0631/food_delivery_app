@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'startup_viewmodel.dart';
+import 'package:lottie/lottie.dart';
 
 class StartupView extends StackedView<StartupViewModel> {
   const StartupView({super.key});
@@ -8,8 +9,14 @@ class StartupView extends StackedView<StartupViewModel> {
   @override
   Widget builder(
       BuildContext context, StartupViewModel viewModel, Widget? child) {
-    return const Scaffold(
-      body: Center(child: Text('hello')),
+    return Scaffold(
+      body: Center(
+        child: Lottie.asset(
+          'assets/animations/spoon.json',
+          width: 180,
+          repeat: true,
+        ),
+      ),
     );
   }
 

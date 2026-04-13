@@ -59,19 +59,24 @@ class OrdersGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(16),
-      itemCount: viewModel.orders.length,
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 0.8,
-      ),
-      itemBuilder: (context, index) {
-        final order = viewModel.orders[index];
-        return OrderCard(viewModel: viewModel, order: order);
+    return RefreshIndicator(
+      onRefresh: () async {
+        await viewModel.fetchOrderedItems();
       },
+      child: GridView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: viewModel.orders.length,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 0.8,
+        ),
+        itemBuilder: (context, index) {
+          final order = viewModel.orders[index];
+          return OrderCard(viewModel: viewModel, order: order);
+        },
+      ),
     );
   }
 }
@@ -88,7 +93,10 @@ class OrderCard extends StatelessWidget {
       color: Colors.transparent,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () => viewModel.navigateToOrderDescription(order),
+        onTap: () {
+          viewModel.navigateToOrderDescription(order);
+          viewModel.completeOrder(order);
+        },
         child: Card(
           margin: EdgeInsets.zero,
           child: Column(
@@ -96,7 +104,7 @@ class OrderCard extends StatelessWidget {
             children: [
               Expanded(
                 child: Hero(
-                  tag: order.id ?? order.hashCode, // safe hero tag
+                  tag: order.id ?? order.hashCode,
                   child: Image.network(
                     order.mealImage,
                     width: double.infinity,
@@ -113,6 +121,17 @@ class OrderCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Text('${order.quantity}'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  order.status,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
                 ),
               ),
             ],

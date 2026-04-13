@@ -10,13 +10,18 @@ class CartViewModel extends BaseViewModel {
   final CartRepository _cartRepository = locator<CartRepository>();
   final OrderItemRepository _orderItemRepository =
       locator<OrderItemRepository>();
+  
+  //for order conformatino
   final DialogService _dialogService = locator<DialogService>();
-
+  //cart items
   List<CartItem> _cart = [];
   List<CartItem> get cart => _cart;
+  //list of selected cart items
   final List<CartItem> _selected = [];
   List<CartItem> get selectedItems => _selected;
+  //for selction mode and addition mode
   bool get isSelectionMode => _selected.isNotEmpty;
+  
   bool _showSuccess = false;
   bool get showSuccess => _showSuccess;
 
@@ -40,13 +45,11 @@ class CartViewModel extends BaseViewModel {
 
   Future<void> fetchCartItems() async {
     final result = await runBusyFuture(_cartRepository.getCart());
-
     if (result is Success<List<CartItem>>) {
       _cart = result.data;
     } else if (result is Failure) {
       setError((result as Failure).message);
     }
-
     notifyListeners();
   }
 
@@ -58,7 +61,6 @@ class CartViewModel extends BaseViewModel {
     );
 
     try {
-      // Check if any failed
       final failures = result.whereType<Failure>().toList();
       if (failures.isNotEmpty) {
         await _dialogService.showDialog(

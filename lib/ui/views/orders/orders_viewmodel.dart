@@ -29,6 +29,19 @@ class OrdersViewModel extends BaseViewModel {
     notifyListeners();
   }
 
+  Future<void> completeOrder(OrderItem order) async {
+    final result = await runBusyFuture(
+      _orderItemRepository.updateOrderStatus(order.id!, "completed"),
+    );
+
+    if (result is Success) {
+      await _orderItemRepository.deleteOrder(order.id!);
+      await fetchOrderedItems();
+    } else if (result is Failure) {
+      setError((result as Failure).message);
+    }
+  }
+
   void nav() {
     _navigationService.navigateToCartView();
   }

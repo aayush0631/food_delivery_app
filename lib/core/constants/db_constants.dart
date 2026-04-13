@@ -29,6 +29,7 @@ class OrderItemColumns {
   static const mealImage = 'meal_image';
   static const price = 'price';
   static const quantity = 'quantity';
+  static const status = 'status';
 }
 
 class FavoriteColumns {

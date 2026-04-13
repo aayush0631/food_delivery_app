@@ -6,12 +6,13 @@
 // **************************************************************************
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:flutter/cupertino.dart' as _i11;
 import 'package:flutter/material.dart' as _i10;
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart' as _i1;
-import 'package:stacked_services/stacked_services.dart' as _i13;
-import 'package:week8/models/meals.dart' as _i11;
-import 'package:week8/models/order_item.dart' as _i12;
+import 'package:stacked_services/stacked_services.dart' as _i14;
+import 'package:week8/models/meals.dart' as _i12;
+import 'package:week8/models/order_item.dart' as _i13;
 import 'package:week8/ui/views/cart/cart_view.dart' as _i5;
 import 'package:week8/ui/views/food_menu/food_menu_view.dart' as _i3;
 import 'package:week8/ui/views/login/login_view.dart' as _i4;
@@ -120,9 +121,11 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<CartViewArguments>(
         orElse: () => const CartViewArguments(),
       );
-      return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => _i5.CartView(key: args.key),
+      return _i10.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            _i5.CartView(key: args.key),
         settings: data,
+        transitionsBuilder: data.transition ?? _i1.TransitionsBuilders.fadeIn,
       );
     },
     _i6.MealDescriptionView: (data) {
@@ -137,9 +140,13 @@ class StackedRouter extends _i1.RouterBase {
       final args = data.getArgs<OrdersViewArguments>(
         orElse: () => const OrdersViewArguments(),
       );
-      return _i10.MaterialPageRoute<dynamic>(
-        builder: (context) => _i7.OrdersView(key: args.key),
+      return _i10.PageRouteBuilder<dynamic>(
+        pageBuilder: (context, animation, secondaryAnimation) =>
+            _i7.OrdersView(key: args.key),
         settings: data,
+        transitionsBuilder:
+            data.transition ?? _i1.TransitionsBuilders.slideLeft,
+        transitionDuration: const Duration(milliseconds: 300),
       );
     },
     _i8.MainView: (data) {
@@ -171,7 +178,7 @@ class StackedRouter extends _i1.RouterBase {
 class StartupViewArguments {
   const StartupViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -193,7 +200,7 @@ class StartupViewArguments {
 class FoodMenuViewArguments {
   const FoodMenuViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -215,7 +222,7 @@ class FoodMenuViewArguments {
 class LoginViewArguments {
   const LoginViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -237,7 +244,7 @@ class LoginViewArguments {
 class CartViewArguments {
   const CartViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -262,9 +269,9 @@ class MealDescriptionViewArguments {
     required this.meal,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
-  final _i11.Meal meal;
+  final _i12.Meal meal;
 
   @override
   String toString() {
@@ -286,7 +293,7 @@ class MealDescriptionViewArguments {
 class OrdersViewArguments {
   const OrdersViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -308,7 +315,7 @@ class OrdersViewArguments {
 class MainViewArguments {
   const MainViewArguments({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -333,9 +340,9 @@ class OrderDescriptionViewArguments {
     required this.order,
   });
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
-  final _i12.OrderItem order;
+  final _i13.OrderItem order;
 
   @override
   String toString() {
@@ -354,9 +361,9 @@ class OrderDescriptionViewArguments {
   }
 }
 
-extension NavigatorStateExtension on _i13.NavigationService {
+extension NavigatorStateExtension on _i14.NavigationService {
   Future<dynamic> navigateToStartupView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -372,7 +379,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToFoodMenuView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -388,7 +395,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToLoginView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -404,7 +411,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToCartView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -420,8 +427,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToMealDescriptionView({
-    _i10.Key? key,
-    required _i11.Meal meal,
+    _i11.Key? key,
+    required _i12.Meal meal,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -437,7 +444,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToOrdersView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -453,7 +460,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToMainView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -469,8 +476,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> navigateToOrderDescriptionView({
-    _i10.Key? key,
-    required _i12.OrderItem order,
+    _i11.Key? key,
+    required _i13.OrderItem order,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -486,7 +493,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithStartupView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -502,7 +509,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithFoodMenuView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -518,7 +525,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithLoginView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -534,7 +541,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithCartView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -550,8 +557,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithMealDescriptionView({
-    _i10.Key? key,
-    required _i11.Meal meal,
+    _i11.Key? key,
+    required _i12.Meal meal,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -567,7 +574,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithOrdersView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -583,7 +590,7 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithMainView({
-    _i10.Key? key,
+    _i11.Key? key,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,
@@ -599,8 +606,8 @@ extension NavigatorStateExtension on _i13.NavigationService {
   }
 
   Future<dynamic> replaceWithOrderDescriptionView({
-    _i10.Key? key,
-    required _i12.OrderItem order,
+    _i11.Key? key,
+    required _i13.OrderItem order,
     int? routerId,
     bool preventDuplicates = true,
     Map<String, String>? parameters,

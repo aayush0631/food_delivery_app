@@ -5,6 +5,7 @@ class OrderItem {
   final String mealImage;
   final double price;
   final int quantity;
+  final String status;
 
   OrderItem({
     this.id,
@@ -13,6 +14,7 @@ class OrderItem {
     required this.mealImage,
     required this.price,
     required this.quantity,
+    required this.status,
   });
 
   factory OrderItem.fromMap(Map<String, dynamic> map) {
@@ -23,6 +25,7 @@ class OrderItem {
       mealImage: map['meal_image'],
       price: map['price'],
       quantity: map['quantity'],
+      status: map['status'] ?? 'cooking',
     );
   }
 
@@ -34,6 +37,7 @@ class OrderItem {
       'meal_image': mealImage,
       'price': price,
       'quantity': quantity,
+      'status': status,
     };
   }
 }

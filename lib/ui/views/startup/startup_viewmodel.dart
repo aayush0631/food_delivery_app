@@ -10,7 +10,8 @@ class StartupViewModel extends BaseViewModel {
 
   bool get isLoggedIn => _loginService.isLoggedIn;
 
-  void runStartupLogic() {
+  void runStartupLogic() async {
+    await Future.delayed(const Duration(seconds: 2));
     if (isLoggedIn) {
       _navigationService.replaceWithMainView();
     } else {

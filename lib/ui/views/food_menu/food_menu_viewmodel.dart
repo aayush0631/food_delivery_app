@@ -54,9 +54,7 @@ class FoodMenuViewModel extends BaseViewModel {
 
   // TOGGLE FAVORITE
   Future<void> addToFavorite(Meal meal) async {
-    final result = await runBusyFuture(
-      _favoriteRepository.toggleFavorite(meal),
-    );
+    final result = await _favoriteRepository.toggleFavorite(meal);
     if (result is Success<bool>) {
       if (result.data) {
         favoriteMealIds.add(meal.id);
@@ -93,9 +91,7 @@ class FoodMenuViewModel extends BaseViewModel {
   }
 
   Future<void> addToCart(CartItem item) async {
-    setBusy(true);
-    await runBusyFuture(_cartRepository.addToCart(item));
-    setBusy(false);
+    await _cartRepository.addToCart(item);
   }
 
   void nav() {

@@ -57,7 +57,7 @@ class AnimatedFlyWidget extends StatefulWidget {
     super.key,
     required this.start,
     required this.end,
-    required this.image, 
+    required this.image,
     required this.size,
   });
 
@@ -114,8 +114,8 @@ class _AnimatedFlyWidgetState extends State<AnimatedFlyWidget>
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 widget.image,
-                width: widget.size.width,
-                height: widget.size.height,
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
               ),
             ),

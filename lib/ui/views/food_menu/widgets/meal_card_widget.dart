@@ -24,7 +24,6 @@ class MealCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         onTap: () => viewModel.openMealDescription(meal),
         child: Card(
-          key: itemKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -33,6 +32,7 @@ class MealCard extends StatelessWidget {
                   tag: meal.id,
                   child: Image.network(
                     meal.image,
+                    key: itemKey,
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
@@ -73,22 +73,20 @@ class MealCard extends StatelessWidget {
                         onPressed: () async {
                           final confirmed =
                               await viewModel.openAddToCartSheet(meal);
-
                           if (!confirmed) return;
-
-                          // ✅ delay to avoid flicker
                           await Future.delayed(
                               const Duration(milliseconds: 300));
-
                           final startBox = itemKey.currentContext!
                               .findRenderObject() as RenderBox;
                           final endBox = cartKey.currentContext!
                               .findRenderObject() as RenderBox;
-
-                          final start = startBox.localToGlobal(Offset.zero);
-                          final end = endBox.localToGlobal(Offset.zero);
+                          final start = startBox.localToGlobal(Offset.zero) +
+                              Offset(startBox.size.width / 2,
+                                  startBox.size.height / 2);
+                          final end = endBox.localToGlobal(Offset.zero) +
+                              Offset(endBox.size.width / 2,
+                                  endBox.size.height / 2);
                           final size = startBox.size;
-
                           showFlyAnimation(
                               context, start, end, meal.image, size);
                         }),
@@ -125,7 +123,7 @@ void showFlyAnimation(
   String image,
   Size size,
 ) {
-  final overlay = Overlay.of(context);
+  final overlay = Overlay.of(context, rootOverlay: true);
 
   final entry = OverlayEntry(
     builder: (context) => AnimatedFlyWidget(
@@ -135,9 +133,7 @@ void showFlyAnimation(
       size: size,
     ),
   );
-
   overlay.insert(entry);
-
   Future.delayed(const Duration(milliseconds: 1300), () {
     entry.remove();
   });

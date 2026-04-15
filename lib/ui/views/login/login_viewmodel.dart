@@ -15,9 +15,9 @@ class LoginViewModel extends FormViewModel with $LoginView {
   static const String password = 'stha';
 
   void login() {
-    final username = usernameController.text;
-    final pass = passwordController.text;
-    final mail = emailController.text;
+    // final username = usernameController.text;
+    // final pass = passwordController.text;
+    // final mail = emailController.text;
 
     // if (username == name && pass == password && mail == email) {
     //   _authService.login();

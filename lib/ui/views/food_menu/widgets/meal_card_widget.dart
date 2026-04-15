@@ -83,9 +83,7 @@ class MealCard extends StatelessWidget {
                           final start = startBox.localToGlobal(Offset.zero) +
                               Offset(startBox.size.width / 2,
                                   startBox.size.height / 2);
-                          final end = endBox.localToGlobal(Offset.zero) +
-                              Offset(endBox.size.width / 2,
-                                  endBox.size.height / 2);
+                          final end = endBox.localToGlobal(Offset.zero);
                           final size = startBox.size;
                           showFlyAnimation(
                               context, start, end, meal.image, size);

@@ -1,84 +1,115 @@
-import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
-import 'package:week8/app/app.locator.dart';
-import 'package:week8/core/utils/results.dart';
-import 'package:week8/models/cart.dart';
-import 'package:week8/repositories/cart_repository.dart';
-import 'package:week8/repositories/order_item_repository.dart';
+  import 'package:stacked/stacked.dart';
+  import 'package:stacked_services/stacked_services.dart';
+  import 'package:week8/app/app.locator.dart';
+  import 'package:week8/core/utils/results.dart';
+  import 'package:week8/models/cart.dart';
+  import 'package:week8/repositories/cart_repository.dart';
+  import 'package:week8/repositories/order_item_repository.dart';
 
-class CartViewModel extends BaseViewModel {
-  final CartRepository _cartRepository = locator<CartRepository>();
-  final OrderItemRepository _orderItemRepository =
-      locator<OrderItemRepository>();
-  
-  //for order conformatino
-  final DialogService _dialogService = locator<DialogService>();
-  //cart items
-  List<CartItem> _cart = [];
-  List<CartItem> get cart => _cart;
-  //list of selected cart items
-  final List<CartItem> _selected = [];
-  List<CartItem> get selectedItems => _selected;
-  //for selction mode and addition mode
-  bool get isSelectionMode => _selected.isNotEmpty;
-  
-  bool _showSuccess = false;
-  bool get showSuccess => _showSuccess;
+  class CartViewModel extends BaseViewModel {
+    final CartRepository _cartRepository = locator<CartRepository>();
+    final OrderItemRepository _orderItemRepository =
+        locator<OrderItemRepository>();
+    
+    //for order conformatino
+    final DialogService _dialogService = locator<DialogService>();
+    //cart items
+    List<CartItem> _cart = [];
+    List<CartItem> get cart => _cart;
+    //list of selected cart items
+    final List<CartItem> _selected = [];
+    List<CartItem> get selectedItems => _selected;
+    //for selction mode and addition mode
+    bool get isSelectionMode => _selected.isNotEmpty;
+    
+    bool _showSuccess = false;
+    bool get showSuccess => _showSuccess;
 
-  void resetSuccess() {
-    _showSuccess = false;
-  }
-
-  void toggleStateOfSelection(CartItem cItem) {
-    if (_selected.contains(cItem)) {
-      _selected.remove(cItem);
-    } else {
-      _selected.add(cItem);
+    void resetSuccess() {
+      _showSuccess = false;
     }
-    notifyListeners();
-  }
 
-  void clearSelection() {
-    _selected.clear();
-    notifyListeners();
-  }
-
-  Future<void> fetchCartItems() async {
-    final result = await runBusyFuture(_cartRepository.getCart());
-    if (result is Success<List<CartItem>>) {
-      _cart = result.data;
-    } else if (result is Failure) {
-      setError((result as Failure).message);
+    void toggleStateOfSelection(CartItem cItem) {
+      if (_selected.contains(cItem)) {
+        _selected.remove(cItem);
+      } else {
+        _selected.add(cItem);
+      }
+      notifyListeners();
     }
-    notifyListeners();
-  }
 
-  Future<void> addSelectedToOrders() async {
-    final result = await runBusyFuture(
-      Future.wait(_selected.map((item) {
-        return _orderItemRepository.addToOrder(item);
-      })),
-    );
+    void clearSelection() {
+      _selected.clear();
+      notifyListeners();
+    }
 
-    try {
-      final failures = result.whereType<Failure>().toList();
-      if (failures.isNotEmpty) {
+    Future<void> fetchCartItems() async {
+      final result = await runBusyFuture(_cartRepository.getCart());
+      if (result is Success<List<CartItem>>) {
+        _cart = result.data;
+      } else if (result is Failure) {
+        setError((result as Failure).message);
+      }
+      notifyListeners();
+    }
+
+    Future<void> addSelectedToOrders() async {
+      final result = await runBusyFuture(
+        Future.wait(_selected.map((item) {
+          return _orderItemRepository.addToOrder(item);
+        })),
+      );
+
+      try {
+        final failures = result.whereType<Failure>().toList();
+        if (failures.isNotEmpty) {
+          await _dialogService.showDialog(
+            title: 'Error',
+            description: failures.first.message,
+          );
+          return;
+        }
+        clearSelection();
+        await _dialogService.showDialog(
+          title: 'Success',
+          description: 'Items added to orders',
+        );
+      } catch (e) {
         await _dialogService.showDialog(
           title: 'Error',
-          description: failures.first.message,
+          description: 'Something went wrong',
         );
-        return;
       }
-      clearSelection();
-      await _dialogService.showDialog(
-        title: 'Success',
-        description: 'Items added to orders',
+    }
+
+    Future<void> deleteSelectedFromCart() async {
+      final result = await runBusyFuture(
+        Future.wait(_selected.map((item) {
+          return _cartRepository.deeteCartItem(item.id!);
+        })),
       );
-    } catch (e) {
-      await _dialogService.showDialog(
-        title: 'Error',
-        description: 'Something went wrong',
-      );
+
+      try {
+        final failures = result.whereType<Failure>().toList();
+        if (failures.isNotEmpty) {
+          await _dialogService.showDialog(
+            title: 'Error',
+            description: failures.first.message,
+          );
+          return;
+        }
+        clearSelection();
+        await _dialogService.showDialog(
+          title: 'Success',
+          description: 'Items deleted from cart',
+        );
+      } catch (e) {
+        await _dialogService.showDialog(
+          title: 'Error',
+          description: 'Something went wrong',
+        );
+      }
+      //refetch he update list of cart items
+      await fetchCartItems();
     }
   }
-}

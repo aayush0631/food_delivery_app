@@ -92,19 +92,14 @@ class _AnimatedFlyWidgetState extends State<AnimatedFlyWidget>
       animation: _animation,
       builder: (context, child) {
         final t = _animation.value;
-
         final position = Offset.lerp(widget.start, widget.end, t)!;
-
-        // 🔥 SCALE LOGIC (IMPORTANT)
         double scale;
-
         if (t < 0.7) {
           scale = 1; // stay full size
         } else {
           // shrink only at end
-          scale = 1 - ((t - 0.7) * 2); 
+          scale = 1 - ((t - 0.7) * 2);
         }
-
         return Positioned(
           left: position.dx,
           top: position.dy,

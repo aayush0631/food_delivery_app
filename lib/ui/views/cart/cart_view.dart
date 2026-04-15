@@ -22,22 +22,43 @@ class CartView extends StackedView<CartViewModel> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: const Text("Cart"),
       ),
-      //order botton appears only when selection mode
+      //order adn delete botton appears only when selection mode
       floatingActionButton: viewModel.isSelectionMode
-          ? FloatingActionButton.extended(
-              onPressed: viewModel.isBusy
-                  ? null
-                  : () async {
-                      await viewModel.addSelectedToOrders();
-                    },
-              icon: viewModel.isBusy
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : const Icon(Icons.add_shopping_cart),
-              label: Text(viewModel.isBusy ? "Adding..." : "Add"),
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FloatingActionButton.extended(
+                  onPressed: viewModel.isBusy
+                      ? null
+                      : () async {
+                          await viewModel.addSelectedToOrders();
+                        },
+                  icon: viewModel.isBusy
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.add_shopping_cart),
+                  label: Text(viewModel.isBusy ? "Adding..." : "Add"),
+                ),
+                const SizedBox(width: 12), // spacing
+                FloatingActionButton.extended(
+                  onPressed: viewModel.isBusy
+                      ? null
+                      : () async {
+                          await viewModel.deleteSelectedFromCart();
+                        },
+                  icon: viewModel.isBusy
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.delete),
+                  label: Text(viewModel.isBusy ? "Deleting..." : "Delete"),
+                ),
+              ],
             )
           : null,
       backgroundColor: Theme.of(context).colorScheme.surface,

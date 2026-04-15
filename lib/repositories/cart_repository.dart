@@ -32,4 +32,16 @@ class CartRepository {
       return const Failure('something went wrong');
     }
   }
+
+  Future<Results<bool>> deeteCartItem(int id) async {
+    try {
+      final rowsDeleted = await _databaseService.deleteCartItem(id);
+      return Success(rowsDeleted > 0);
+    } catch (e) {
+      if (e is DatabaseException) {
+        return Failure(ErrorHandling.fromDatabaseError(e).toString());
+      }
+      return const Failure('Failed to delete cart item');
+    }
+  }
 }

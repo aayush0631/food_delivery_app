@@ -121,4 +121,13 @@ class DatabaseService {
       whereArgs: [id],
     );
   }
+
+  Future<int> deleteCartItem(int id) async {
+    final db = await database;
+    return await db.delete(
+      DBTables.cart,
+      where: '${CartColumns.id} = ?',
+      whereArgs: [id],
+    );
+  }
 }

@@ -9,7 +9,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:week8/core/utils/valisators.dart';
+import 'package:week8/core/utils/validators.dart';
 
 const bool _autoTextFieldValidation = true;
 

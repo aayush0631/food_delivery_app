@@ -4,7 +4,7 @@ import 'package:stacked/stacked_annotations.dart';
 import 'package:week8/ui/common/ui_helpers.dart';
 import 'package:week8/ui/views/login/login_view.form.dart';
 import 'login_viewmodel.dart';
-import 'package:week8/core/utils/valisators.dart';
+import 'package:week8/core/utils/validators.dart';
 
 @FormView(fields: [
   FormTextField(

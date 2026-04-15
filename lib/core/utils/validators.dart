@@ -17,6 +17,11 @@
 /// ```dart
 /// validator: (value) => Validator.required(value, 'Username')
 /// ```
+/// 
+/// Edge cases:
+/// - null input
+/// - whitespace-only strings
+/// - invalid formats
 class Validator {
   /// Validates that the input is not null or empty.
   ///

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:week8/models/meals.dart';
-
 import 'meal_description_viewmodel.dart';
 
 class MealDescriptionView extends StackedView<MealDescriptionViewModel> {

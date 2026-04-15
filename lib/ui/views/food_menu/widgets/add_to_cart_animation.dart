@@ -68,44 +68,52 @@ class AnimatedFlyWidget extends StatefulWidget {
 class _AnimatedFlyWidgetState extends State<AnimatedFlyWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  //controls the animation progress from 0 to 1 over time
   late Animation<double> _animation;
 
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
+      //syncs animation with screen refresh and pauses when not visible
       vsync: this,
       duration: const Duration(milliseconds: 1300),
     );
-
+    //applies easing curve to make motion smooth instead of linear
     _animation = CurvedAnimation(
       parent: _controller,
       curve: Curves.easeInOutCubic,
     );
-
+    //starts the animation from 0 to 1
     _controller.forward();
   }
-    @override
+
+  @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _animation,
       builder: (context, child) {
+        //current animation progress value between 0 and 1
         final t = _animation.value;
+        //linear interpolation between start and end based on t
+        //position = start + (end - start) * t
         final position = Offset.lerp(widget.start, widget.end, t)!;
         double scale;
-        if (t < 0.7) {
-          scale = 1; // stay full size
+        if (t < 0.5) {
+          scale = 1; //keep full size in first half
         } else {
-          // shrink only at end
+          //gradually shrink near the end of animation
           scale = 1 - ((t - 0.7) * 2);
         }
         return Positioned(
+          //places widget at calculated x and y screen position
           left: position.dx,
           top: position.dy,
           child: Transform.scale(
-            scale: scale.clamp(0.3, 1.0),
+            //applies scaling transformation to widget
+            scale: scale,
             child: ClipRRect(
+              //clips child into rounded rectangle shape
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 widget.image,
